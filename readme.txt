@@ -6,13 +6,15 @@ This is a simple project to query twitter with a simple keyword / keyphrase sear
 and have it update the result in a ListView using the Twitter Streaming API.
 
 
+Requires twitter4j library, copied to your app/lib folder.  Download twitter4j at:
+http://twitter4j.org/en/index.html#download.  Note: designed for Twitter4j Version 4.0.2
+
 For setup, you need to create an app/src/main folder.  In that folder, create a file
 named twitter4j.txt.  This file should have four lines.
     <OAuthConsumerKey>
     <OAuthConsumerSecret>
     <OAuthAccessToken>
     <OAuthAccessTokenSecret>
-
 
 
  The MIT License (MIT)
