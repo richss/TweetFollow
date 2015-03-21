@@ -3,15 +3,23 @@ package com.richardstansbury.tweetfollow;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import java.util.ArrayList;
 
 /**
+ * Project: TweetFollow
+ *
+ * This ListActivity represents the main activity of a simple twitter application
+ * that given a keyword will show the live stream of tweets including the keyword.
+ *
+ * This is created for demonstration purposes for my SE 395/595 curriculum at
+ * Embry-Riddle Aeronautical University; however, was written on a personal computer
+ * during my own free time.  Therefore, I accept personal ownership of the project
+ * and release it under the MIT open source license.
+ *
  * @author Richard S. Stansbury
  *
  */
@@ -39,16 +47,16 @@ import java.util.ArrayList;
 
 public class MainActivity extends ListActivity {
 
-    Button followButton;
-    EditText searchTextField;
-    TwitterHelper twitter;
-
-    String searchString;
-
+    Button _followButton;
+    EditText _searchTextField;
+    TwitterHelper _twitter;
     ArrayAdapter<String> _adapter;
     ArrayList<String> _tweets;
-    int listCount;
 
+    /**
+     * Creates the activity
+     * @param savedInstanceState - saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,43 +67,58 @@ public class MainActivity extends ListActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        followButton = (Button) findViewById(R.id.search_button);
-        searchTextField = (EditText) findViewById(R.id.search_text);
+        //Grab fields from layout
+        _followButton = (Button) findViewById(R.id.search_button);
+        _searchTextField = (EditText) findViewById(R.id.search_text);
 
-        searchString = "";
-
+        //Creates array list for the list adapter
         _tweets = new ArrayList<>();
-        listCount = 0;
 
+        //Creates an array adapter type list adapter
         _adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 _tweets);
+        //Set listener
         setListAdapter(_adapter);
 
-        twitter = new TwitterHelper(_tweets, this, _adapter);
+        //Create an instance of the twitter helper class to handle streaming API.
+        _twitter = new TwitterHelper(_tweets, this, _adapter);
 
     }
 
 
+    /**
+     * Handles press of the Search/Query button
+     * @param v - view from button required for onClick handler
+     */
     public void queryHandler(View v) {
-        String newSearchString = searchTextField.getText().toString();
 
+        //Get query string
+        String newSearchString = _searchTextField.getText().toString();
 
-        Log.i("ButtonEvent", "Button was pressed.");
-        Toast toast = Toast.makeText(getApplicationContext(), "search=" + newSearchString, Toast.LENGTH_SHORT);
-        toast.show();
-
+        //If string is not empty, do query
         if (!newSearchString.equals("")) {
-            searchString = newSearchString;
-            twitter.start(new String[]{newSearchString});
+            _twitter.start(new String[]{newSearchString});
         }
     }
 
+    /**
+     * Handles press of the pause button
+     * @param v - view of pause button
+     */
     public void pauseHandler(View v)
     {
-        Log.d("Pause Handler", "Paused");
-        Toast toast = Toast.makeText(getApplicationContext(), "Stopped", Toast.LENGTH_SHORT);
-        toast.show();
-        twitter.stop();
+        _twitter.stop();
+    }
+
+
+    /**
+     * Handles press of clear button by clearning list and
+     * notifying the adapter.
+     * @param v - view of clear button
+     */
+    public void clearHandler(View v) {
+        _tweets.clear();
+        _adapter.notifyDataSetChanged();
     }
 }
