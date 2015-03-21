@@ -76,7 +76,7 @@ public class MainActivity extends ListActivity {
 
         //Creates an array adapter type list adapter
         _adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
+                R.layout.mylist,
                 _tweets);
         //Set listener
         setListAdapter(_adapter);
