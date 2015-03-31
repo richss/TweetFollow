@@ -3,6 +3,7 @@ package com.richardstansbury.tweetfollow;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -93,11 +94,14 @@ public class MainActivity extends ListActivity {
      */
     public void queryHandler(View v) {
 
+        Log.d("TweetFollow", "Query Button Pressed");
+
         //Get query string
         String newSearchString = _searchTextField.getText().toString();
 
         //If string is not empty, do query
         if (!newSearchString.equals("")) {
+            Log.d("TweetFollow", "Starting to follow:" + newSearchString);
             _twitter.start(new String[]{newSearchString});
         }
     }
